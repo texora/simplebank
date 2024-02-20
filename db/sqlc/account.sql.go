@@ -9,7 +9,7 @@ import (
 	"context"
 )
 
-const creatAccount = `-- name: CreatAccount :one
+const createAccount = `-- name: CreateAccount :one
 INSERT INTO accounts (
   owner,
   balance,
@@ -19,14 +19,14 @@ INSERT INTO accounts (
 ) RETURNING id, owner, balance, currency, created_at
 `
 
-type CreatAccountParams struct {
+type CreateAccountParams struct {
 	Owner    string `json:"owner"`
 	Balance  int64  `json:"balance"`
 	Currency string `json:"currency"`
 }
 
-func (q *Queries) CreatAccount(ctx context.Context, arg CreatAccountParams) (Accounts, error) {
-	row := q.db.QueryRowContext(ctx, creatAccount, arg.Owner, arg.Balance, arg.Currency)
+func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (Accounts, error) {
+	row := q.db.QueryRowContext(ctx, createAccount, arg.Owner, arg.Balance, arg.Currency)
 	var i Accounts
 	err := row.Scan(
 		&i.ID,
